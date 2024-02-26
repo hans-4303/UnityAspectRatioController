@@ -35,7 +35,7 @@ public class AspectRatioController : MonoBehaviour
 
     // If false, switching to fullscreen is blocked.
     [SerializeField]
-    private bool allowFullscreen = true;
+    private readonly bool allowFullscreen = true;
 
     // Aspect ratio width and height.
     [SerializeField]
@@ -45,13 +45,13 @@ public class AspectRatioController : MonoBehaviour
 
     // Minimum and maximum values for window width/height in pixel.
     [SerializeField]
-    private int minWidthPixel  = 512;
+    private readonly int minWidthPixel  = 512;
     [SerializeField]
-    private int minHeightPixel = 512;
+    private readonly int minHeightPixel = 512;
     [SerializeField]
-    private int maxWidthPixel  = 2048;
+    private readonly int maxWidthPixel  = 2048;
     [SerializeField]
-    private int maxHeightPixel = 2048;
+    private readonly int maxHeightPixel = 2048;
 
     // Currently locked aspect ratio.
     private float aspect;
@@ -198,7 +198,7 @@ public class AspectRatioController : MonoBehaviour
         // Register (replace) WindowProc callback. This gets called every time a window event is triggered,
         // such as resizing or moving the window.
         // Also save old WindowProc callback, as we will have to call it from our own new callback.
-        wndProcDelegate = wndProc;
+        wndProcDelegate = WndProc;
         newWndProcPtr = Marshal.GetFunctionPointerForDelegate(wndProcDelegate);
         oldWndProcPtr = SetWindowLong(unityHWnd, GWLP_WNDPROC, newWndProcPtr);
 
@@ -237,7 +237,7 @@ public class AspectRatioController : MonoBehaviour
     /// <param name="lParam">Additional message information. The contents of this parameter
     /// depend on the value of the uMsg parameter. </param>
     /// <returns></returns>
-    IntPtr wndProc(IntPtr hWnd, uint msg, IntPtr wParam, IntPtr lParam)
+    IntPtr WndProc(IntPtr hWnd, uint msg, IntPtr wParam, IntPtr lParam)
     {
         // Check message type.
         // We are only interested in resize events, so ignore everything else.
